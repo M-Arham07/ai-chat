@@ -1,4 +1,8 @@
-export default function MessageBubble({ content, sender, timestamp }) {
+
+import LoadingBubble from "./loading-message";
+import ReactMarkdown from "react-markdown";
+
+export default function MessageBubble({ content, sender, timestamp}) {
   const isMe = sender === "user"
 
   // Convert timestamp to GMT+5 and get minute key
@@ -33,7 +37,9 @@ export default function MessageBubble({ content, sender, timestamp }) {
   return (
     <div className={containerClasses}>
       <div className={bubbleClasses}>
-        <p className="text-sm">{content}</p>
+        <div className="text-sm">
+          <ReactMarkdown>{content}</ReactMarkdown>
+        </div>
       </div>
       {minuteKey !== localStorage.getItem('lastMessageMinute') && (
         <div 
