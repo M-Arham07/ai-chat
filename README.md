@@ -1,45 +1,9 @@
-# 🤖 AI Chatbot App
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-A sleek AI chatbot built with **Next.js**, **React**, **Tailwind CSS**, and **shadcn/ui**. Supports both **Gemini** and **Grok** models.
+## Getting Started
 
----
-
-
-## ⚙️ Tech Stack
- 
-| Feature          | Stack                        |
-|------------------|------------------------------|
-| Framework        | Next.js (App Router)         |
-| UI Components    | shadcn/ui                    |
-| Styling          | Tailwind CSS                 |
-| AI Models        | Gemini + Groq                |
-| State Management | React Hooks                  |
-| Storage          | Local Storage (optional DB)  |
-
----
-
-## ✨ Features
-
-| Feature                 | Description                                  |
-|-------------------------|----------------------------------------------|
-| 🧠 AI Switching         | Toggle between Gemini and Grok               |
-| 💬 Cool UI              | Typing Animation + auto scroll               |
-| 🎨 Dark/Light Mode      | Theme toggle with Tailwind support           |
-| 💾 Chat History         | Saved in DB or LocalStorage                  |
-| iMessage Theme          | Traditional iMessage like ui                 |
-
----
-
-## 🚀 Setup
+First, run the development server:
 
 ```bash
-git clone https://github.com/M-Arham07/ai-chatbot-app.git
-
-
-cd ai-chat
-
-
-npm install
-
 npm run dev
 
