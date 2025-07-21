@@ -6,7 +6,7 @@ import ModelDropdown from "@/components/custom-ui/model-dropdown";
 import GeminiChat from "@/server-actions/Gemini";
 import GrokChat from "@/server-actions/Groq";
 import { useState, useEffect, useRef, Fragment } from "react";
-
+import useSound from "use-sound";
 
 
 
@@ -16,6 +16,23 @@ export default function MessageUI() {
   const [lastMessageMinute, setLastMessageMinute] = useState('');
   const [Loading, setIsLoading] = useState(false); // For loading message bubble!
   const messagesEndRef = useRef(null);
+
+  
+  // SOUND EFFECTS:  // IN useSound hook, path to the url is provided relative to public folder
+
+  // WE WILL GET MESSAGE HISTORY FROM LOCAL STORAGE WHENEVER COMPONENT IS MOUNTED!
+  useEffect(()=>{
+   const chatHistory = localStorage.getItem("chatHistory");
+
+   if(chatHistory){
+    setMsgs(JSON.parse(chatHistory));
+   }
+
+  },[])
+
+  const [sentSound]=useSound("/message-sent.mp3");
+  const [receivedSound]=useSound("/message-received.mp3");
+ 
 
   // AI MODELS SWITCH:
   const [Model, setModel] = useState("Gemini")
@@ -41,6 +58,10 @@ export default function MessageUI() {
 
 
   const handleSend = async (prompt) => {
+   
+    // Play message sent sound:
+    sentSound();
+
     const now = Date.now();
     setMsgs((prev) => [...prev, {
       role: "user",
@@ -91,10 +112,18 @@ export default function MessageUI() {
         throw new Error("Failed to get response from Gemini!")
 
       }
-      console.log("Response is:", RESPONSE)
+      // console.log("Response is:", RESPONSE); RESPONSE contains the received answer from AI
 
+      //Play message received sound:
+      receivedSound();
+
+      
       setIsLoading(false);
+
+      // UPDATE THE msgs ARRAY
       setMsgs((prev) => [...prev, { role: "model", parts: [{ text: RESPONSE }] }]);
+
+      return true;
 
 
     })
@@ -105,8 +134,19 @@ export default function MessageUI() {
         setMsgs((prev) => [...prev, { role: "model", parts: [{ text: "Oops! Something went wrong." }] }]);
         return;
 
-      });
+      })
+      .finally(()=>{
 
+        // SAVE CHAT HISTORY (msgs array) TO LOCAL STORAGE:
+        // we will need to convert array to json before saving
+        localStorage.setItem("chatHistory",JSON.stringify(msgs));
+        return;
+
+
+      })
+
+
+  
 
 
   }, [msgs]);

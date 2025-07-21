@@ -18,6 +18,25 @@ export default function ModelDropdown({ onModelChange }) {
     //DEBUGGING:
     //   useEffect(()=>console.log("model changed to",Model),[Model])
 
+    /* GET MODEL PREFERENCE FROM LOCALSTORAGE ON MOUNT, 
+       MODEL IS ALREADY A STRING SO NO NEED TO PARSE, if modelPreference 
+       not found or someone tried to use another model then assign it gemini */
+    useEffect(() => {
+        const modelPreference = localStorage.getItem("modelPreference");
+        const availableModels = ["Gemini", "Grok"];
+        
+        if (!modelPreference || !availableModels.includes(modelPreference)) {
+            setModel("Gemini")
+        }
+        else {
+            setModel(modelPreference);
+        }
+    }, []);
+
+
+    // SET MODEL PREFERENCE TO LOCALSTORAGE, MODEL IS ALREADY A STRING SO NO NEED TO STRINGIFY
+    useEffect(() => localStorage.setItem("modelPreference", Model), [Model]);
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
