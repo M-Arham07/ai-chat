@@ -2,8 +2,11 @@
 import LoadingBubble from "@/components/custom-ui/loading-message";
 import MessageBubble from "@/components/custom-ui/message-bubble";
 import MessagingInput from "@/components/custom-ui/message-input";
+import ModelDropdown from "@/components/custom-ui/model-dropdown";
 import GeminiChat from "@/server-actions/Gemini";
+import GrokChat from "@/server-actions/Groq";
 import { useState, useEffect, useRef, Fragment } from "react";
+
 
 
 
@@ -13,6 +16,9 @@ export default function MessageUI() {
   const [lastMessageMinute, setLastMessageMinute] = useState('');
   const [Loading, setIsLoading] = useState(false); // For loading message bubble!
   const messagesEndRef = useRef(null);
+
+  // AI MODELS SWITCH:
+  const [Model, setModel] = useState("Gemini")
 
   // Update lastMessageMinute when a new message is added
   useEffect(() => {
@@ -69,10 +75,19 @@ export default function MessageUI() {
 
     setIsLoading(true);
 
-    // Call the Gemini server action and pass msgs (the history + latest prompt, as an argument!)
-    GeminiChat(msgs).then((RESPONSE) => {
 
-      if(!RESPONSE){
+    // We will assign a function to the const ChatModel based on condition
+    // if model is Gemini then assign it GeminiChat function otherwise GrokChat
+
+    const ChatModel = Model === "Gemini" ? GeminiChat : GrokChat;
+
+
+    /* Call the ChatModel function and pass msgs (the history + latest prompt, as an argument!)
+       Here the chat model could be GeminiChat or GrokChat server action based on user preference */
+
+    ChatModel(msgs).then((RESPONSE) => {
+
+      if (!RESPONSE) {
         throw new Error("Failed to get response from Gemini!")
 
       }
@@ -84,7 +99,7 @@ export default function MessageUI() {
 
     })
       .catch(err => {
-        console.error("Error! Logs:\n",err);
+        console.error("Error! Logs:\n", err);
 
         setIsLoading(false);
         setMsgs((prev) => [...prev, { role: "model", parts: [{ text: "Oops! Something went wrong." }] }]);
@@ -100,52 +115,59 @@ export default function MessageUI() {
 
 
 
-
-
-
   return (
-    <main className="flex flex-col min-h-screen">
-      <div className="flex-1 overflow-y-auto p-4 pb-32">
-        <div className="max-w-2xl mx-auto">
-          {
+    <>
 
 
 
-            msgs.map((message, index) => {
-              const timestamp = messageTimes[index];
-              const key = `msg-${index}`;
-              const date = new Date(timestamp);
-              const minuteKey = `${date.getHours()}:${date.getMinutes()}`;
-              const showTime = minuteKey === lastMessageMinute;
-
-              return (
-                <Fragment key={key}>
-
-        
-                  <MessageBubble
-                    content={message.parts[0].text}
-                    sender={message.role}
-                    timestamp={showTime ? timestamp : null}
-                  />
-                  
+      {/* Fixed Navbar */}
+      <nav className="sticky top-0 left-0 w-full border-b border-gray-200 z-20 h-14 flex items-center justify-between px-6 shadow-sm">
+        <span className="font-bold text-lg tracking-wide">FreeAI</span>
+        <ModelDropdown onModelChange={(model) => setModel(model)} />
+      </nav>
+      <main className="flex flex-col max-h-[90vh] pt-14">
+        <div className="flex-1 overflow-y-auto p-4 pb-32">
+          <div className="max-w-2xl mx-auto">
+            {
 
 
-                </Fragment>
-              )
 
-            })
-          }
+              msgs.map((message, index) => {
+                const timestamp = messageTimes[index];
+                const key = `msg-${index}`;
+                const date = new Date(timestamp);
+                const minuteKey = `${date.getHours()}:${date.getMinutes()}`;
+                const showTime = minuteKey === lastMessageMinute;
 
-          {/* if loading, then show the loading bubble */}
-        
-          {Loading && msgs.length>0 && msgs[msgs.length-1]?.role === "user"
-                  && <LoadingBubble /> }
-                 
-          <div ref={messagesEndRef} className="flex-1 overflow-y-auto p-4 pb-10 scroll-pb-32 scroll-pt-4" /> {/* Scroll anchor */}
+                return (
+                  <Fragment key={key}>
+
+
+                    <MessageBubble
+                      content={message.parts[0].text}
+                      sender={message.role}
+                      timestamp={showTime ? timestamp : null}
+                    />
+
+
+
+                  </Fragment>
+                )
+
+              })
+            }
+
+            {/* if loading, then show the loading bubble */}
+
+            {Loading && msgs.length > 0 && msgs[msgs.length - 1]?.role === "user"
+              && <LoadingBubble />}
+
+            <div ref={messagesEndRef} className="flex-1 overflow-y-auto p-4 pb-10 scroll-pb-32 scroll-pt-4" /> {/* Scroll anchor */}
+          </div>
         </div>
-      </div>
-      <MessagingInput onSend={handleSend} />
-    </main>
+        <MessagingInput onSend={handleSend} />
+      </main>
+    </>
   )
 }
 

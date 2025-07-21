@@ -6,13 +6,13 @@ A sleek AI chatbot built with **Next.js**, **React**, **Tailwind CSS**, and **sh
 
 
 ## ⚙️ Tech Stack
-
-| Feature           | Stack                        |
+ 
+| Feature          | Stack                        |
 |------------------|------------------------------|
 | Framework        | Next.js (App Router)         |
 | UI Components    | shadcn/ui                    |
 | Styling          | Tailwind CSS                 |
-| AI Models        | Gemini + Grok (via API keys) |
+| AI Models        | Gemini + Groq                |
 | State Management | React Hooks                  |
 | Storage          | Local Storage (optional DB)  |
 
@@ -36,7 +36,7 @@ A sleek AI chatbot built with **Next.js**, **React**, **Tailwind CSS**, and **sh
 git clone https://github.com/M-Arham07/ai-chatbot-app.git
 
 
-cd ai-chatbot-app
+cd ai-chat
 
 
 npm install

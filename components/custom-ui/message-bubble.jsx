@@ -25,7 +25,7 @@ export default function MessageBubble({ content, sender, timestamp}) {
   const { formattedTime, minuteKey } = getTimeDetails(timestamp);
 
   const bubbleClasses = `
-    max-w-[70%] p-3 rounded-xl
+    max-w-[99%] p-3 rounded-xl
     ${isMe ? "bg-blue-500 text-white rounded-br-none" : "bg-gray-200 text-gray-800 rounded-bl-none"}
     break-words
   `
