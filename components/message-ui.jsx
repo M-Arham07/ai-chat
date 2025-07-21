@@ -22,11 +22,18 @@ export default function MessageUI() {
 
   // WE WILL GET MESSAGE HISTORY FROM LOCAL STORAGE WHENEVER COMPONENT IS MOUNTED!
   useEffect(()=>{
+    try{
    const chatHistory = localStorage.getItem("chatHistory");
 
    if(chatHistory){
     setMsgs(JSON.parse(chatHistory));
    }
+  }
+  catch(err){
+    console.log("Nice try! Glad I have cool error handling, ain't a vibe coder. Heres some logs:" ,err)
+    setMsgs([]);
+    return;
+  }
 
   },[])
 
