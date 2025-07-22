@@ -169,7 +169,9 @@ export default function MessageUI() {
 
       {/* Fixed Navbar */}
       <nav className="sticky top-0 left-0 w-full border-b border-gray-200 z-20 h-14 flex items-center justify-between px-6 shadow-sm">
-        <span className="font-bold text-lg tracking-wide">FreeAI</span>
+        <span className="font-bold text-lg tracking-wide">
+          <a href="https://github.com/M-Arham07" target="_blank"> FreeAI </a>
+          </span>
         <ModelDropdown onModelChange={(model) => setModel(model)} />
       </nav>
       <main className="flex flex-col max-h-[90vh] pt-14">
@@ -212,7 +214,7 @@ export default function MessageUI() {
             <div ref={messagesEndRef} className="flex-1 overflow-y-auto p-4 pb-10 scroll-pb-32 scroll-pt-4" /> {/* Scroll anchor */}
           </div>
         </div>
-        <MessagingInput onSend={handleSend} />
+        <MessagingInput onSend={handleSend} disabled={Loading}/>
       </main>
     </>
   )
