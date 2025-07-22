@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL('https://free-ai.vercel.app'), // Replace with your actual domain
+  metadataBase: new URL('https://free-aichat.vercel.app'),  // Remove trailing slash for consistency
   title: {
     default: "FreeAI Chat - Free AI Chat Assistant with Multiple Models",
     template: "%s | FreeAI Chat"
@@ -31,7 +31,7 @@ export const metadata = {
   openGraph: {
     title: "FreeAI Chat - Free AI Chat Assistant",
     description: "Experience seamless conversations with multiple AI models. Switch between Gemini and Groq for enhanced AI interactions.",
-    url: 'https://free-ai.vercel.app',
+    url: 'https://free-aichat.vercel.app',  // Remove trailing slash for consistency
     siteName: 'FreeAI Chat',
     locale: 'en_US',
     type: 'website',
@@ -84,6 +84,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="google-site-verification" content="W3wHC93KbFpQsD5atPpV-zi6dHE8U2dq4MeebPWJ-rE" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
